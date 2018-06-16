@@ -1,18 +1,21 @@
-call gradlew build
+call runcrud
 if "%ERRORLEVEL%" == "0" goto runbrowser
 echo.
 echo RUNCRUD has errors - breaking work
 goto fail
 
 :runbrowser
-call "C:\Program Files\Mozilla Firefox\firefox.exe"
-if "%ERRORLEVEL%" == "0" call http://localhost:8080/crud/v1/task/getTasks
-echo Cannot open web browser
+start firefox.exe http://localhost:8080/crud/v1/task/getTasks
+if "%ERRORLEVEL%" == "0" goto stoptomcat
+echo Cannot open the browser.
 goto fail
+
+:stoptomcat
+call %CATALINA_HOME%\bin\shutdown.bat
 
 :fail
 echo.
-echo There were errors
+echo There were errors.
 
 :end
 echo.
